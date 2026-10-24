@@ -5,10 +5,25 @@
   const fa = new Intl.NumberFormat('fa-IR', { maximumFractionDigits: 1 });
 
   // download links
-  const placeholder = !cfg.apkUrl || cfg.apkUrl.includes('YOUR-USERNAME');
-  document.querySelectorAll('.dl').forEach((a) => {
-    if (placeholder) a.setAttribute('href', '#faq');
-    else { a.setAttribute('href', cfg.apkUrl); a.setAttribute('rel', 'noopener'); }
+  const dls = document.querySelectorAll('.dl');
+  const apk = cfg.apkUrl || '/download/latest';
+  const fa1 = new Intl.NumberFormat('fa-IR', { maximumFractionDigits: 1 });
+  const noRelease = () => dls.forEach((a) => { a.setAttribute('href', '#faq'); a.dataset.none = '1'; });
+  if (apk.startsWith('/')) {
+    dls.forEach((a) => a.setAttribute('href', apk));
+    fetch('/api/latest').then((r) => (r.ok ? r.json() : Promise.reject())).then((j) => {
+      const v = $('#ver');
+      if (v && j.release) { v.hidden = false; v.lastChild.textContent = ' نسخه‌ی ' + j.release.version + ' • ' + fa1.format(j.release.size / 1048576) + ' مگابایت'; }
+    }).catch(noRelease);
+  } else if (apk.includes('YOUR-USERNAME')) noRelease();
+  else dls.forEach((a) => { a.setAttribute('href', apk); a.setAttribute('rel', 'noopener'); });
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest && e.target.closest('.dl');
+    if (a && a.dataset.none === '1') {
+      const t = $('#toast');
+      t.textContent = 'هنوز نسخه‌ای برای دانلود منتشر نشده؛ به‌زودی.';
+      t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 3200);
+    }
   });
   const gh = $('#gh');
   if (gh && cfg.githubUrl) { gh.href = cfg.githubUrl; gh.hidden = false; gh.rel = 'noopener'; }

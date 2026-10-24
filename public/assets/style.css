@@ -240,3 +240,4 @@ footer nav{display:flex;gap:20px}footer a:hover{color:var(--text)}
 .nf-box{padding:24px}.nf-code{font-size:110px;font-weight:700;background:linear-gradient(120deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2}
 .nf-box h1{font-size:28px;margin:6px 0;letter-spacing:0}.nf-box p{color:var(--muted);margin-bottom:24px}
 .bg{display:none}
+[hidden]{display:none!important}

@@ -8,5 +8,6 @@
     "not_found_handling": "404-page"
   },
   "ai": { "binding": "AI" },
+  "kv_namespaces": [{ "binding": "REL" }],
   "observability": { "enabled": true }
 }
